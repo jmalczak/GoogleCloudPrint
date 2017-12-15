@@ -1,15 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.Serialization;
 
 namespace GoogleCloudPrint.Model
 {
-    [DataContract]
-    public class CloudPrinters
+    public class CloudPrinters : CloudResponseBase
     {
-        [DataMember]
         public bool success { get; set; }
 
-        [DataMember]
         public List<CloudPrinter> printers { get; set; }
     }
 }
