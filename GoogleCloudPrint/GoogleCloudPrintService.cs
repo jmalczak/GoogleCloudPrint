@@ -225,7 +225,7 @@ namespace GoogleCloudPrint
 
         private async Task<ServiceAccountCredential> AuthorizeAsync()
         {
-            var certificate = new X509Certificate2(_keyFilePath, _keyFileSecret, X509KeyStorageFlags.Exportable);
+            var certificate = new X509Certificate2(_keyFilePath, _keyFileSecret, X509KeyStorageFlags.Exportable | X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet);
 
             var credential = new ServiceAccountCredential(
                 new ServiceAccountCredential.Initializer(_serviceAccountEmail)

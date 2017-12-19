@@ -3,11 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
     <PackageId>GoogleCloudPrint</PackageId>
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>1.0.1</PackageVersion>
     <Authors>jmalczak, christianz, mstrange86, slackshot</Authors>
     <Description>Google Cloud Print Api Wrapper</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Migration to .NET Standard</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixed issue with certificate store on Azure</PackageReleaseNotes>
     <PackageTags>GCP, google cloud print</PackageTags>
   </PropertyGroup>
 
