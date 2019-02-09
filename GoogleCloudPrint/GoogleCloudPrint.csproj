@@ -3,16 +3,18 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
     <PackageId>GoogleCloudPrint</PackageId>
-    <PackageVersion>1.0.1</PackageVersion>
+    <PackageVersion>1.0.2</PackageVersion>
     <Authors>jmalczak, christianz, mstrange86, slackshot</Authors>
     <Description>Google Cloud Print Api Wrapper</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Fixed issue with certificate store on Azure</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixed issue with certificate store on Azure, dispose certificate and allow to override cert load settings</PackageReleaseNotes>
     <PackageTags>GCP, google cloud print</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Apis.Auth" Version="1.32.0" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.38.0" />
   </ItemGroup>
 
 </Project>

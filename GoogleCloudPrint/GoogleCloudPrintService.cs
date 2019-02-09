@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Google.Apis.Auth.OAuth2;
+using Google.Apis.Json;
+using GoogleCloudPrint.Model;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -7,10 +11,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.Json;
-using GoogleCloudPrint.Model;
-using Newtonsoft.Json;
 
 namespace GoogleCloudPrint
 {
@@ -127,7 +127,7 @@ namespace GoogleCloudPrint
             }
             catch (Exception ex)
             {
-                return new CloudPrinters { success = false, printers = new List<CloudPrinter>(), Exception = ex};
+                return new CloudPrinters { success = false, printers = new List<CloudPrinter>(), Exception = ex };
             }
         }
 
@@ -149,6 +149,14 @@ namespace GoogleCloudPrint
             }
         }
 
+        public virtual X509Certificate2 GetCertificate()
+        {
+            return new X509Certificate2(
+                _keyFilePath,
+                _keyFileSecret,
+                X509KeyStorageFlags.Exportable | X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet);
+        }
+
         private async Task RefreshAccessTokenAsync()
         {
             if (_credentials == null)
@@ -161,7 +169,6 @@ namespace GoogleCloudPrint
                 await _credentials.RequestAccessTokenAsync(CancellationToken.None);
             }
         }
-
 
         private async Task<T> GcpServiceCallAsync<T>(string restVerb, PostData p = null) where T : class
         {
@@ -225,17 +232,18 @@ namespace GoogleCloudPrint
 
         private async Task<ServiceAccountCredential> AuthorizeAsync()
         {
-            var certificate = new X509Certificate2(_keyFilePath, _keyFileSecret, X509KeyStorageFlags.Exportable | X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet);
+            using (var certificate = GetCertificate())
+            {
+                var credential = new ServiceAccountCredential(
+                    new ServiceAccountCredential.Initializer(_serviceAccountEmail)
+                    {
+                        Scopes = new[] { GoogleCloudPrintScope }
+                    }.FromCertificate(certificate));
 
-            var credential = new ServiceAccountCredential(
-                new ServiceAccountCredential.Initializer(_serviceAccountEmail)
-                {
-                    Scopes = new[] { GoogleCloudPrintScope }
-                }.FromCertificate(certificate));
+                await credential.RequestAccessTokenAsync(CancellationToken.None);
 
-            await credential.RequestAccessTokenAsync(CancellationToken.None);
-
-            return credential;
+                return credential;
+            }
         }
 
         private async Task<ServiceAccountCredential> AuthorizeAsync(string jsonCredentialPath)
