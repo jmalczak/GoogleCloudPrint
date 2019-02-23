@@ -154,7 +154,7 @@ namespace GoogleCloudPrint
             return new X509Certificate2(
                 _keyFilePath,
                 _keyFileSecret,
-                X509KeyStorageFlags.Exportable | X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet);
+                X509KeyStorageFlags.Exportable);
         }
 
         private async Task RefreshAccessTokenAsync()
